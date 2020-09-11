@@ -1,0 +1,25 @@
+[package]
+name = "noise_fn"
+description = "Some simple noise functions and traits to allow easy integration with your own"
+keywords = ["noise", "random", "simplex", "perlin", "seeded"]
+categories = ["mathematics", "game-development", "graphics", "rust-patterns", "no-std"]
+documentation = "https://docs.rs/noise_fn"
+homepage = "https://github.com/LukeMiles49/noise-fn-rs"
+version = "0.1.0"
+authors = ["Luke Miles <luke.49@live.co.uk>"]
+license = "MIT"
+repository = "https://github.com/LukeMiles49/noise-fn-rs"
+readme = "README.md"
+edition = "2018"
+
+[dependencies]
+rand = "0.7"
+sized_matrix = "^0.2.2"
+higher_order_functions = "^0.1.1"
+lazy_static = "1"
+num-traits = "0.2"
+
+[dev-dependencies]
+version-sync = "0.9"
+
+[features]
