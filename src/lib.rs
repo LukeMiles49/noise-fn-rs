@@ -15,7 +15,7 @@
 //! To use this, add it as a dependency to your Cargo.toml:
 //! ```toml
 //! [dependencies]
-//! noise_fn = "^0.1.0"
+//! noise_fn = "^0.1.1"
 //! ```
 
 #![no_std]
@@ -24,7 +24,7 @@
 #![feature(associated_type_defaults)]
 #![feature(external_doc)]
 
-#![doc(html_root_url = "https://docs.rs/noise_fn/0.1.0")]
+#![doc(html_root_url = "https://docs.rs/noise_fn/0.1.1")]
 
 pub mod noise;
 pub mod helpers;
@@ -32,6 +32,9 @@ pub mod perm_table;
 mod white;
 mod simplex;
 mod scale;
+mod add;
+mod constant;
+mod gradient;
 mod sum;
 mod octaves;
 
@@ -45,6 +48,9 @@ pub use {
 	white::WhiteNoise,
 	simplex::Simplex,
 	scale::ScaleNoise,
+	add::AddNoise,
+	constant::Constant,
+	gradient::Gradient,
 	sum::SumNoise,
 	octaves::Octaves,
 };

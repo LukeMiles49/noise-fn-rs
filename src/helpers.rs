@@ -1,4 +1,4 @@
-use super::{Noise, Seedable, noise::Seeded};
+use super::{Noise, NoiseDomain, Seedable, noise::Seeded};
 
 use core::marker::PhantomData;
 
@@ -41,4 +41,44 @@ impl<TNoise: SeedOnlyNoise> Noise for TNoise {
 
 impl<Noise: SeedOnlyNoise> Seeded for Noise {
 	type Config = EmptyConfig<Noise>;
+}
+
+/// This is a workaround for allowing both seedable and non-seedable noise functions in combining types.
+///
+/// This will be replaced by making `Noise` and `Seedable` mutually exclusive once this is possible.
+/// This will allow the combining types to distinguish between seedable and non-seedable noise functions and seed only the seedable ones.
+#[derive(Copy, Clone)]
+pub struct IgnoreSeed<Seed, Inner> {
+	inner: Inner,
+	_phantom: PhantomData<fn(Seed) -> Self>,
+}
+
+impl<Seed, Inner: Noise> Noise for IgnoreSeed<Seed, Inner> {
+	type Value = Inner::Value;
+	type Unseeded = Self;
+}
+
+impl<Seed, Inner> IgnoreSeed<Seed, Inner> {
+	pub fn new(inner: Inner) -> Self {
+		Self { inner, _phantom: PhantomData }
+	}
+}
+
+impl<Seed, Inner> Seedable for IgnoreSeed<Seed, Inner> {
+	type Seed = Seed;
+	type Seeded = Self;
+	
+	fn seed(self, _: Self::Seed) -> Self {
+		self
+	}
+}
+
+impl<Seed, Inner> Seeded for IgnoreSeed<Seed, Inner> {
+	type Config = Self;
+}
+
+impl<Arg, Seed, Inner: NoiseDomain<Arg>> NoiseDomain<Arg> for IgnoreSeed<Seed, Inner> {
+	fn noise(&self, arg: Arg) -> Self::Value {
+		self.inner.noise(arg)
+	}
 }

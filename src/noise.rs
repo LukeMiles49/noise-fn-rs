@@ -15,6 +15,12 @@ pub trait Seedable: Sized {
 	fn seed(self, seed: Self::Seed) -> Self::Seeded;
 }
 
+/*
+TODO: Make Seedable and Noise mutually exclusive once supported.
+
+impl<T: Seedable> !Noise for T { }
+*/
+
 /// A struct which can be created by seeding an instance of `Config`.
 pub trait Seeded: Sized {
 	type Config: Seedable<Seeded = Self>;

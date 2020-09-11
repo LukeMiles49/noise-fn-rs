@@ -3,6 +3,8 @@ use super::{Noise, NoiseDomain, Seedable, noise::Seeded};
 use core::ops::Mul;
 
 /// A noise function which scales both the input and output values.
+///
+/// `noise(x) = inner.noise(x * scale_in) * scale_out`
 #[derive(Copy, Clone)]
 pub struct ScaleNoise<Inner, InScale: Copy, OutScale: Copy> {
 	inner: Inner,
@@ -16,7 +18,6 @@ impl<Inner: Noise, InScale: Copy, OutScale: Copy> Noise for ScaleNoise<Inner, In
 }
 
 impl<Inner, InScale: Copy, OutScale: Copy> ScaleNoise<Inner, InScale, OutScale> {
-	/// Create a noise function where `noise(x) = inner.noise(x * scale_in) * scale_out`.
 	pub fn new(inner: Inner, scale_in: InScale, scale_out: OutScale) -> ScaleNoise<Inner, InScale, OutScale> {
 		ScaleNoise { inner, scale_in, scale_out }
 	}
