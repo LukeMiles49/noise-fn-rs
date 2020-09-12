@@ -1,4 +1,6 @@
-use core::hash::{Hash, Hasher, SipHasher};
+use core::hash::{Hash, Hasher};
+
+use wyhash::WyHash;
 
 /// A noise function producing `Value`s.
 pub trait Noise: Sized {
@@ -40,9 +42,7 @@ pub trait SplitSeed {
 
 impl SplitSeed for u64 {
 	fn split(&self, n: usize) -> Self {
-		// FIXME: Move to a non-deprecated Hasher once there's one in core.
-		let mut hasher = SipHasher::new();
-		self.hash(&mut hasher);
+		let mut hasher = WyHash::with_seed(*self);
 		n.hash(&mut hasher);
 		hasher.finish()
 	}

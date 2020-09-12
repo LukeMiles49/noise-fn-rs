@@ -1,4 +1,4 @@
-use super::{NoiseDomain, WhiteNoise, helpers::{SeedOnlyNoise, EmptyConfig}};
+use super::{NoiseDomain, HashNoise, helpers::{SeedOnlyNoise, EmptyConfig}};
 
 use sized_matrix::{Vector, Dot};
 
@@ -9,7 +9,7 @@ use lazy_static::lazy_static;
 /// A simplex noise function loosely based on Stefan Gustavson's open source implementation.
 #[derive(Copy, Clone)]
 pub struct Simplex {
-	inner: WhiteNoise,
+	inner: HashNoise,
 }
 
 impl Simplex {
@@ -24,7 +24,7 @@ impl SeedOnlyNoise for Simplex {
 	
 	fn seed(seed: u64) -> Self {
 		Self {
-			inner: WhiteNoise::seed(seed)
+			inner: HashNoise::seed(seed)
 		}
 	}
 }
@@ -67,9 +67,9 @@ lazy_static! {
 	].map(Vector::vector);
 }
 
-fn simplex_factor_2(inner: &WhiteNoise, base: Vector<u8, 2>, rel: Vector<f64, 2>, base_offset: Vector<u8, 2>, rel_offset: f64) -> f64 {
-	let base = base.zip(base_offset, u8::wrapping_add);
-	let rel = rel.zip(base_offset, |b, o| b - o as f64 + rel_offset);
+fn simplex_factor_2(inner: &HashNoise, base: Vector<i64, 2>, rel: Vector<f64, 2>, base_offset: Vector<i64, 2>, rel_offset: f64) -> f64 {
+	let base = base + base_offset;
+	let rel = rel.zip(base_offset, |r, o| r - o as f64 + rel_offset);
 	
 	let t = 0.5 - rel.dot(rel);
 	if t < 0. { 0.0 }
@@ -87,7 +87,7 @@ impl NoiseDomain<Vector<f64, 2>> for Simplex {
 		let t = (base[0] + base[1]) * *G2;
 		let rel = pos - base + Vector::vector([t, t]);
 		
-		let base = base.map(|x| (x as i64).rem_euclid(256) as u8);
+		let base = base.map(|x| x as i64);
 		
 		return 70.0 * (
 			simplex_factor_2(&self.inner, base, rel, Vector::vector([0, 0]), 0.) +
@@ -102,9 +102,9 @@ impl NoiseDomain<Vector<f64, 2>> for Simplex {
 	}
 }
 
-fn simplex_factor_3(inner: &WhiteNoise, base: Vector<u8, 3>, rel: Vector<f64, 3>, base_offset: Vector<u8, 3>, rel_offset: f64) -> f64 {
-	let base = base.zip(base_offset, u8::wrapping_add);
-	let rel = rel.zip(base_offset, |b, o| b - o as f64 + rel_offset);
+fn simplex_factor_3(inner: &HashNoise, base: Vector<i64, 3>, rel: Vector<f64, 3>, base_offset: Vector<i64, 3>, rel_offset: f64) -> f64 {
+	let base = base + base_offset;
+	let rel = rel.zip(base_offset, |r, o| r - o as f64 + rel_offset);
 	
 	let t = 0.6 - rel.dot(rel);
 	if t < 0. { 0.0 }
@@ -122,7 +122,7 @@ impl NoiseDomain<Vector<f64, 3>> for Simplex {
 		let t = (base[0] + base[1] + base[2]) * *G3;
 		let rel = pos - base + Vector::vector([t, t, t]);
 		
-		let base = base.map(|x| (x as i64).rem_euclid(256) as u8);
+		let base = base.map(|x| x as i64);
 		
 		return 32.0 * (
 			simplex_factor_3(&self.inner, base, rel, Vector::vector([0, 0, 0]), 0.) +
@@ -147,9 +147,9 @@ impl NoiseDomain<Vector<f64, 3>> for Simplex {
 	}
 }
 
-fn simplex_factor_4(inner: &WhiteNoise, base: Vector<u8, 4>, rel: Vector<f64, 4>, base_offset: Vector<u8, 4>, rel_offset: f64) -> f64 {
-	let base = base.zip(base_offset, u8::wrapping_add);
-	let rel = rel.zip(base_offset, |b, o| b - o as f64 + rel_offset);
+fn simplex_factor_4(inner: &HashNoise, base: Vector<i64, 4>, rel: Vector<f64, 4>, base_offset: Vector<i64, 4>, rel_offset: f64) -> f64 {
+	let base = base + base_offset;
+	let rel = rel.zip(base_offset, |r, o| r - o as f64 + rel_offset);
 	
 	let t = 0.6 - rel.dot(rel);
 	if t < 0. { 0.0 }
@@ -167,7 +167,7 @@ impl NoiseDomain<Vector<f64, 4>> for Simplex {
 		let t = (base[0] + base[1] + base[2] + base[3]) * *G4;
 		let rel = pos - base + Vector::vector([t, t, t, t]);
 		
-		let base = base.map(|x| (x as i64).rem_euclid(256) as u8);
+		let base = base.map(|x| x as i64);
 		
 		return 27.0 * (
 			simplex_factor_4(&self.inner, base, rel, Vector::vector([0, 0, 0, 0]), 0.) +
