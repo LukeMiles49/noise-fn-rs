@@ -2,6 +2,13 @@
 
 This project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.2.0](https://crates.io/crates/noise_fn/0.2.0) - 2022-06-27
+
+### Updated:
+* Updated to [higher_order_functions](https://crates.io/crates/higher_order_functions) v0.2.0
+* Updated to [sized_matrix](https://crates.io/crates/sized_matrix) v0.3.0
+* Removed unnecessary unstable features
+
 ## [v0.1.2](https://crates.io/crates/noise_fn/0.1.2) - 2020-09-12
 
 ### Added:

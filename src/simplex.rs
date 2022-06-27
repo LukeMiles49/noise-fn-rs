@@ -69,7 +69,7 @@ lazy_static! {
 
 fn simplex_factor_2(inner: &HashNoise, base: Vector<i64, 2>, rel: Vector<f64, 2>, base_offset: Vector<i64, 2>, rel_offset: f64) -> f64 {
 	let base = base + base_offset;
-	let rel = rel.zip(base_offset, |r, o| r - o as f64 + rel_offset);
+	let rel = rel.zip_with(base_offset, |r, o| r - o as f64 + rel_offset);
 	
 	let t = 0.5 - rel.dot(rel);
 	if t < 0. { 0.0 }
@@ -104,7 +104,7 @@ impl NoiseDomain<Vector<f64, 2>> for Simplex {
 
 fn simplex_factor_3(inner: &HashNoise, base: Vector<i64, 3>, rel: Vector<f64, 3>, base_offset: Vector<i64, 3>, rel_offset: f64) -> f64 {
 	let base = base + base_offset;
-	let rel = rel.zip(base_offset, |r, o| r - o as f64 + rel_offset);
+	let rel = rel.zip_with(base_offset, |r, o| r - o as f64 + rel_offset);
 	
 	let t = 0.6 - rel.dot(rel);
 	if t < 0. { 0.0 }
@@ -149,7 +149,7 @@ impl NoiseDomain<Vector<f64, 3>> for Simplex {
 
 fn simplex_factor_4(inner: &HashNoise, base: Vector<i64, 4>, rel: Vector<f64, 4>, base_offset: Vector<i64, 4>, rel_offset: f64) -> f64 {
 	let base = base + base_offset;
-	let rel = rel.zip(base_offset, |r, o| r - o as f64 + rel_offset);
+	let rel = rel.zip_with(base_offset, |r, o| r - o as f64 + rel_offset);
 	
 	let t = 0.6 - rel.dot(rel);
 	if t < 0. { 0.0 }

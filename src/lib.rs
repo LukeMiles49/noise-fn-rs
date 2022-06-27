@@ -15,16 +15,14 @@
 //! To use this, add it as a dependency to your Cargo.toml:
 //! ```toml
 //! [dependencies]
-//! noise_fn = "^0.1.2"
+//! noise_fn = "^0.2.0"
 //! ```
 
 #![no_std]
 
-#![feature(const_generics)]
 #![feature(associated_type_defaults)]
-#![feature(external_doc)]
 
-#![doc(html_root_url = "https://docs.rs/noise_fn/0.1.2")]
+#![doc(html_root_url = "https://docs.rs/noise_fn/0.2.0")]
 
 pub mod noise;
 pub mod helpers;
@@ -60,6 +58,6 @@ pub use {
 };
 
 // Include the readme and changelog as hidden documentation so they're tested by cargo test
-#[doc(include = "../README.md")]
-#[doc(include = "../CHANGELOG.md")]
+#[doc = include_str!("../README.md")]
+#[doc = include_str!("../CHANGELOG.md")]
 type _Doctest = ();

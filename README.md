@@ -25,5 +25,5 @@ let value3D = octaves.noise(Vector::vector([1.2, -3.5, 2.8]));
 To use this, add it as a dependency to your Cargo.toml:
 ```toml
 [dependencies]
-noise_fn = "^0.1.2"
+noise_fn = "^0.2.0"
 ```

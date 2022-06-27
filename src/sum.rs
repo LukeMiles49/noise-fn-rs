@@ -26,7 +26,7 @@ impl<Inner: Seedable, const N: usize> Seedable for SumNoise<Inner, N> where Inne
 	type Seeded = SumNoise<Inner::Seeded, N>;
 	
 	fn seed(self, seed: Self::Seed) -> Self::Seeded {
-		SumNoise { inners: self.inners.zip(Init::init(|i| i), |c, i| c.seed(seed.split(i))) }
+		SumNoise { inners: self.inners.zip_with(Init::init(|i| i), |c, i| c.seed(seed.split(i))) }
 	}
 }
 

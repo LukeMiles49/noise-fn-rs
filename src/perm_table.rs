@@ -14,7 +14,7 @@ impl PermTable {
 		let mut table = [0u8; 256];
 		for i in 1..=255 {
 			let j =
-				if i < 255 { rng.gen_range(0, i + 1) }
+				if i < 255 { rng.gen_range(0..=i) }
 				else { let mut j = [0; 1]; rng.fill(&mut j); j[0] };
 			table[i as usize] = table[j as usize];
 			table[j as usize] = i;
